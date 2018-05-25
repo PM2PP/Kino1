@@ -8,6 +8,8 @@ import javafx.scene.layout.Pane;
 import de.hawhh.informatik.sml.kino.fachwerte.Platz;
 import de.hawhh.informatik.sml.kino.materialien.Kinosaal;
 import de.hawhh.informatik.sml.kino.materialien.Vorstellung;
+import de.hawhh.informatik.sml.kino.werkzeuge.barzahlung.BarzahlungWerkzeug;
+import de.hawhh.informatik.sml.kino.werkzeuge.barzahlung.BarzahlungWerkzeugUI;
 
 /**
  * Mit diesem Werkzeug können Plätze verkauft und storniert werden. Es arbeitet
@@ -25,6 +27,9 @@ public class PlatzVerkaufsWerkzeug
 	private int _preisFuerAuswahl;
     // Die aktuelle Vorstellung, deren Plätze angezeigt werden. Kann null sein.
     private Vorstellung _vorstellung;
+    
+    private BarzahlungWerkzeug _barzahlungWerkzeug; 
+    
 
     private PlatzVerkaufsWerkzeugUI _ui;
     
@@ -61,7 +66,9 @@ public class PlatzVerkaufsWerkzeug
                     @Override
                     public void handle(ActionEvent ae)
                     {
-                        verkaufePlaetze(_vorstellung);
+                    	   _barzahlungWerkzeug = new BarzahlungWerkzeug();
+                        //verkaufePlaetze(_vorstellung);
+                        
                     }
                 });
 
