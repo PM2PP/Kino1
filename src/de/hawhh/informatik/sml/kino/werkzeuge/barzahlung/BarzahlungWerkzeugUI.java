@@ -34,7 +34,6 @@ public class BarzahlungWerkzeugUI
 
 	// Die Widgets, aus denen das UI sich zusammensetzt
 	private BorderPane _hauptPanel;
-	// private ListView<VorstellungsFormatierer> _vorstellungAuswahlList;
 	private Stage _stage;
 
 	private Button _abbruchButton;
@@ -45,27 +44,35 @@ public class BarzahlungWerkzeugUI
 	 */
 	public BarzahlungWerkzeugUI()
 	{
-		Stage primaryStage = new Stage();
-		primaryStage.setTitle(TITEL);
-		_hauptPanel = new BorderPane();
-		Scene scene = new Scene(_hauptPanel, 750, 650);
+		_stage = new Stage();
+		_stage.setTitle(TITEL);
+		_hauptPanel = erstellePanel();
+	}
+
+	private BorderPane erstellePanel()
+	{
+		BorderPane hauptPane = new BorderPane();
+		Scene scene = new Scene(hauptPane, 850, 650);
 
 		SplitPane splitter = new SplitPane();
-		splitter.setDividerPositions(0.32f);
-
+		splitter.setDividerPositions(0.75f);
 		splitter.getItems().addAll(erstelleBarzahlungAuswahl());
 
-		SplitPane splitterZwei = new SplitPane();
-		splitterZwei.setDividerPositions(0.5f);
+		BorderPane bottomPanel = new BorderPane();
+		bottomPanel.setRight(abbruchPane());
+		bottomPanel.setLeft(okPane());
 
-		splitterZwei.getItems().addAll(erstelleAbbruchPanel(), erstelleOkPanel());
+		// SplitPane splitterZwei = new SplitPane();
+		// splitterZwei.setDividerPositions(0.5f);
+		// splitterZwei.getItems().addAll(erstelleAbbruchPanel(), erstelleOkPanel());
 
-		_hauptPanel.setTop(erstelleUeberschriftPanel());
-		_hauptPanel.setCenter(splitter);
-		_hauptPanel.setBottom(splitterZwei);
+		hauptPane.setTop(erstelleUeberschriftPanel());
+		hauptPane.setCenter(splitter);
+		hauptPane.setBottom(bottomPanel);
 
-		primaryStage.setScene(scene);
-		_stage = primaryStage;
+		_stage.setScene(scene);
+
+		return hauptPane;
 	}
 
 	/**
@@ -90,11 +97,11 @@ public class BarzahlungWerkzeugUI
 	private Pane erstelleUeberschriftPanel()
 	{
 		StackPane topPanel = new StackPane(); // Kinder per Default zentriert
-		topPanel.setStyle("-fx-background-color: lightblue");
+		topPanel.setStyle("-fx-background-color: darkblue");
 
 		Label label = new Label(TITEL);
 		label.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 20));
-		label.setTextFill(Color.BLUE);
+		label.setTextFill(Color.WHITE);
 
 		topPanel.getChildren().add(label);
 
@@ -102,44 +109,37 @@ public class BarzahlungWerkzeugUI
 	}
 
 	/**
-	 * Schließt das Fenster.
+	 * Erzeugt Abbruch-Pane.
 	 */
-	public void schliesseFenster()
+	private Pane abbruchPane()
 	{
-		System.exit(0);
-	}
+		FlowPane abbruchPane = new FlowPane();
 
-	/**
-	 * Erzeugt das Panel mit dem Beenden-Button.
-	 */
-	private Pane erstelleAbbruchPanel()
-	{
-		FlowPane bottomPane = new FlowPane();
-//		bottomPane.setOrientation(Orientation.HORIZONTAL);
-		bottomPane.setAlignment(Pos.BASELINE_LEFT);
-//		bottomPane.setHgap(600);
-//		bottomPane.setVgap(10);
-
-		bottomPane.setPadding(new Insets(5));
 		_abbruchButton = new Button("Abbruch");
-		bottomPane.getChildren().add(_abbruchButton);
+		_abbruchButton.setOnAction(e -> _stage.close());
 
-		return bottomPane;
+		abbruchPane.getChildren().add(_abbruchButton);
+		abbruchPane.setAlignment(Pos.CENTER_RIGHT);
+		abbruchPane.setPadding(new Insets(10));
+
+		return abbruchPane;
 	}
 
 	/**
-	 * Erzeugt das Panel mit dem Beenden-Button.
+	 * Erzeugt Ok-Pane.
 	 */
-	private Pane erstelleOkPanel()
+	private Pane okPane()
 	{
-		FlowPane bottomPane = new FlowPane();
-//		bottomPane.setOrientation(Orientation.HORIZONTAL);
-		bottomPane.setAlignment(Pos.BASELINE_RIGHT);
-		bottomPane.setPadding(new Insets(5));
-		_okButton = new Button("OK");
-		bottomPane.getChildren().add(_okButton);
+		FlowPane okPane = new FlowPane();
 
-		return bottomPane;
+		_okButton = new Button("Ok");
+		_okButton.setOnAction(e -> _stage.close());
+
+		okPane.getChildren().add(_okButton);
+		okPane.setAlignment(Pos.CENTER_LEFT);
+		okPane.setPadding(new Insets(10));
+
+		return okPane;
 	}
 
 	private Pane erstelleBarzahlungAuswahl()
@@ -157,8 +157,8 @@ public class BarzahlungWerkzeugUI
 		Label ticketPreis = new Label("TicketPreis:");
 		barzahlungAuswahl.add(ticketPreis, 0, 1);
 
-		TextField userTextField = new TextField();
-		barzahlungAuswahl.add(userTextField, 1, 1);
+		TextField ticketPreisTextField = new TextField();
+		barzahlungAuswahl.add(ticketPreisTextField, 1, 1);
 
 		Label bargeld = new Label("Bargeld:");
 		barzahlungAuswahl.add(bargeld, 0, 2);
