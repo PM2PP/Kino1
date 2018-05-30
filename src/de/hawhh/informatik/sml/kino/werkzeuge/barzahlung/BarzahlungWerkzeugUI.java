@@ -55,9 +55,14 @@ public class BarzahlungWerkzeugUI
 
 		splitter.getItems().addAll(erstelleBarzahlungAuswahl());
 
+		SplitPane splitterZwei = new SplitPane();
+		splitterZwei.setDividerPositions(0.5f);
+
+		splitterZwei.getItems().addAll(erstelleAbbruchPanel(), erstelleOkPanel());
+
 		_hauptPanel.setTop(erstelleUeberschriftPanel());
 		_hauptPanel.setCenter(splitter);
-		_hauptPanel.setBottom(erstelleAbbruchPanel());
+		_hauptPanel.setBottom(splitterZwei);
 
 		primaryStage.setScene(scene);
 		_stage = primaryStage;
@@ -110,36 +115,32 @@ public class BarzahlungWerkzeugUI
 	private Pane erstelleAbbruchPanel()
 	{
 		FlowPane bottomPane = new FlowPane();
-		bottomPane.setOrientation(Orientation.HORIZONTAL);
-		bottomPane.setAlignment(Pos.CENTER_LEFT);
-		bottomPane.setHgap(Double.MAX_VALUE);
-		bottomPane.setVgap(10);
-		
-		bottomPane.setPadding(new Insets(5));
-		_okButton = new Button("OK");
-		bottomPane.getChildren().add(_okButton);
-		
+//		bottomPane.setOrientation(Orientation.HORIZONTAL);
+		bottomPane.setAlignment(Pos.BASELINE_LEFT);
+//		bottomPane.setHgap(600);
+//		bottomPane.setVgap(10);
+
 		bottomPane.setPadding(new Insets(5));
 		_abbruchButton = new Button("Abbruch");
 		bottomPane.getChildren().add(_abbruchButton);
 
-		
-
 		return bottomPane;
 	}
 
-	// /**
-	// * Erzeugt das Panel mit dem Beenden-Button.
-	// */
-	// private Pane erstelleOkPanel()
-	// {
-	// bottomPane.setAlignment(Pos.CENTER_LEFT);
-	// bottomPane.setPadding(new Insets(5));
-	// _okButton = new Button("OK");
-	// bottomPane.getChildren().add(_okButton);
-	//
-	// return bottomPane;
-	// }
+	/**
+	 * Erzeugt das Panel mit dem Beenden-Button.
+	 */
+	private Pane erstelleOkPanel()
+	{
+		FlowPane bottomPane = new FlowPane();
+//		bottomPane.setOrientation(Orientation.HORIZONTAL);
+		bottomPane.setAlignment(Pos.BASELINE_RIGHT);
+		bottomPane.setPadding(new Insets(5));
+		_okButton = new Button("OK");
+		bottomPane.getChildren().add(_okButton);
+
+		return bottomPane;
+	}
 
 	private Pane erstelleBarzahlungAuswahl()
 	{
@@ -149,9 +150,9 @@ public class BarzahlungWerkzeugUI
 		barzahlungAuswahl.setVgap(10);
 		barzahlungAuswahl.setPadding(new Insets(25, 25, 25, 25));
 
-		 Text scenetitle = new Text("Bargeld Kassensystem");
-		 scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-		 barzahlungAuswahl.add(scenetitle, 0, 0, 2, 1);
+		Text scenetitle = new Text("Bargeld Kassensystem");
+		scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+		barzahlungAuswahl.add(scenetitle, 0, 0, 2, 1);
 
 		Label ticketPreis = new Label("TicketPreis:");
 		barzahlungAuswahl.add(ticketPreis, 0, 1);
