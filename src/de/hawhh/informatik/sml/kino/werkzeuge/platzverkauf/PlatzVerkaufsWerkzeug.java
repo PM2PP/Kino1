@@ -67,7 +67,7 @@ public class PlatzVerkaufsWerkzeug
                     public void handle(ActionEvent ae)
                     {
                     	   _barzahlungWerkzeug = new BarzahlungWerkzeug();
-                        //verkaufePlaetze(_vorstellung);
+                        verkaufePlaetze(_vorstellung);
                         
                     }
                 });
