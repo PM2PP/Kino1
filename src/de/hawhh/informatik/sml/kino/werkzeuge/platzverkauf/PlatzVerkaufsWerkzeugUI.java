@@ -19,7 +19,7 @@ import javafx.scene.layout.Pane;
  * @author SE2-Team (Uni HH), PM2-Team
  * @version SoSe 2018
  */
-class PlatzVerkaufsWerkzeugUI
+public class PlatzVerkaufsWerkzeugUI
 {
     // Die Widgets, aus denen das UI sich zusammensetzt
     private Pane _hauptPanel;

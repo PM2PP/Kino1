@@ -28,7 +28,7 @@ import de.hawhh.informatik.sml.kino.fachwerte.Platz;
  * @author SE2-Team (Uni HH), PM2-Team
  * @version SoSe 2018
  */
-class Platzplan extends GridPane
+public class Platzplan extends GridPane
 {
     public static double PLATZBUTTON_GROESSE = 20;
 

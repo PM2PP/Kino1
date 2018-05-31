@@ -1,19 +1,20 @@
 package de.hawhh.informatik.sml.kino.werkzeuge.barzahlung;
 
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -35,9 +36,16 @@ public class BarzahlungWerkzeugUI
 	// Die Widgets, aus denen das UI sich zusammensetzt
 	private BorderPane _hauptPanel;
 	private Stage _stage;
+	private GridPane _barzahlungAuswahl;
 
 	private Button _abbruchButton;
 	private Button _okButton;
+
+	private Label _preisLabel;
+	private Label _rueckgeldLabel;
+	private TextField _bargeldTextField;
+
+	private Label _bargeldLabel;
 
 	/**
 	 * Initialisiert die UI.
@@ -62,10 +70,6 @@ public class BarzahlungWerkzeugUI
 		bottomPanel.setRight(abbruchPane());
 		bottomPanel.setLeft(okPane());
 
-		// SplitPane splitterZwei = new SplitPane();
-		// splitterZwei.setDividerPositions(0.5f);
-		// splitterZwei.getItems().addAll(erstelleAbbruchPanel(), erstelleOkPanel());
-
 		hauptPane.setTop(erstelleUeberschriftPanel());
 		hauptPane.setCenter(splitter);
 		hauptPane.setBottom(bottomPanel);
@@ -76,28 +80,12 @@ public class BarzahlungWerkzeugUI
 	}
 
 	/**
-	 * Liefert den UI-Container, in dem die Widgets angeordnet sind.
-	 */
-	public Pane getUIPane()
-	{
-		return _hauptPanel;
-	}
-
-	/**
-	 * Zeigt das Fenster an.
-	 */
-	public void zeigeFenster()
-	{
-		_stage.show();
-	}
-
-	/**
 	 * Erzeugt das Panel mit der Überschrift fuer das Programm.
 	 */
 	private Pane erstelleUeberschriftPanel()
 	{
 		StackPane topPanel = new StackPane(); // Kinder per Default zentriert
-		topPanel.setStyle("-fx-background-color: darkblue");
+		topPanel.setStyle("-fx-background-color: darkred");
 
 		Label label = new Label(TITEL);
 		label.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 20));
@@ -116,7 +104,6 @@ public class BarzahlungWerkzeugUI
 		FlowPane abbruchPane = new FlowPane();
 
 		_abbruchButton = new Button("Abbruch");
-		_abbruchButton.setOnAction(e -> _stage.close());
 
 		abbruchPane.getChildren().add(_abbruchButton);
 		abbruchPane.setAlignment(Pos.CENTER_RIGHT);
@@ -133,7 +120,6 @@ public class BarzahlungWerkzeugUI
 		FlowPane okPane = new FlowPane();
 
 		_okButton = new Button("Ok");
-		_okButton.setOnAction(e -> _stage.close());
 
 		okPane.getChildren().add(_okButton);
 		okPane.setAlignment(Pos.CENTER_LEFT);
@@ -144,36 +130,121 @@ public class BarzahlungWerkzeugUI
 
 	private Pane erstelleBarzahlungAuswahl()
 	{
-		GridPane barzahlungAuswahl = new GridPane();
-		barzahlungAuswahl.setAlignment(Pos.CENTER);
-		barzahlungAuswahl.setHgap(10);
-		barzahlungAuswahl.setVgap(10);
-		barzahlungAuswahl.setPadding(new Insets(25, 25, 25, 25));
+		_barzahlungAuswahl = new GridPane();
+		_barzahlungAuswahl.setAlignment(Pos.CENTER);
+		_barzahlungAuswahl.setHgap(20);
+		_barzahlungAuswahl.setVgap(20);
+		_barzahlungAuswahl.setPadding(new Insets(35, 35, 35, 35));
+
 
 		Text scenetitle = new Text("Bargeld Kassensystem");
-		scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-		barzahlungAuswahl.add(scenetitle, 0, 0, 2, 1);
+		scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 40));
+		_barzahlungAuswahl.add(scenetitle, 0, 0, 2, 1);
 
-		Label ticketPreis = new Label("TicketPreis:");
-		barzahlungAuswahl.add(ticketPreis, 0, 1);
+		_preisLabel = new Label("Preis: ");
+		_preisLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 25));
+		_barzahlungAuswahl.add(_preisLabel, 0, 1);
 
-		TextField ticketPreisTextField = new TextField();
-		barzahlungAuswahl.add(ticketPreisTextField, 1, 1);
+		// Text ticketPreisTextField = new Text("Preis: ");
+		// barzahlungAuswahl.add(ticketPreisTextField, 1, 1);
 
-		Label bargeld = new Label("Bargeld:");
-		barzahlungAuswahl.add(bargeld, 0, 2);
+		_bargeldLabel = new Label("Bargeld:");
+		_bargeldLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 25));
+		_barzahlungAuswahl.add(_bargeldLabel, 0, 2);
 
-		TextField bargeldTextField = new TextField();
-		barzahlungAuswahl.add(bargeldTextField, 1, 2);
+		_bargeldTextField = new TextField();
+		_bargeldTextField.setFont(Font.font("Tahoma", FontWeight.NORMAL, 25));
+		_barzahlungAuswahl.add(_bargeldTextField, 1, 2);
 
-		Label rueckgeld = new Label("Rückgeld:");
-		barzahlungAuswahl.add(rueckgeld, 0, 3);
+		// Text rueckgeldTextField = new Text("Rückgeld: ");
+		// barzahlungAuswahl.add(rueckgeldTextField, 1, 3);
 
-		TextField rueckgeldTextField = new TextField();
-		barzahlungAuswahl.add(rueckgeldTextField, 1, 3);
+		_rueckgeldLabel = new Label("Rueckgeld: ");
+		_rueckgeldLabel.setFont(Font.font("TimesNewRoman", FontWeight.SEMI_BOLD, 30));
+		_rueckgeldLabel.setTextFill(Color.DARKRED);
+		_barzahlungAuswahl.add(_rueckgeldLabel, 0, 3);
 
-		return barzahlungAuswahl;
+		return _barzahlungAuswahl;
 
 	}
 
+	/**
+	 * Liefert den Abbruch-Button.
+	 */
+	public Button getAbbruchButton()
+	{
+		return _abbruchButton;
+	}
+
+	/**
+	 * Liefert den Ok-Button.
+	 */
+	public Button getOkButton()
+	{
+		return _okButton;
+	}
+
+	/**
+	 * Liefert die GridPane für die BarzahungsAuswahl.
+	 */
+	public GridPane getBarzahlungsAuswahl()
+	{
+		return _barzahlungAuswahl;
+	}
+
+	/**
+	 * Liefert das Preis-Label.
+	 */
+	public Label getPreisLabel()
+	{
+		return _preisLabel;
+	}
+
+	/**
+	 * Liefert das Rueckgeld-Label.
+	 */
+	public Label getRueckgeldLabel()
+	{
+		return _rueckgeldLabel;
+	}
+
+	/**
+	 * Liefert das Rueckgeld-Label.
+	 */
+	public Label getBargeldLabel()
+	{
+		return _bargeldLabel;
+	}
+
+	/**
+	 * Liefert den UI-Container, in dem die Widgets angeordnet sind.
+	 */
+	public Pane getUIPane()
+	{
+		return _hauptPanel;
+	}
+
+	/**
+	 * Liefert die Stage der UI.
+	 */
+	public Stage getStage()
+	{
+		return _stage;
+	}
+
+	/**
+	 * Liefert das Fenster.
+	 */
+	public void zeigeFenster()
+	{
+		_stage.show();
+	}
+
+	/**
+	 * Liefert das BargeldTextFeld.
+	 */
+	public TextField getBargeldTextField()
+	{
+		return _bargeldTextField;
+	}
 }
