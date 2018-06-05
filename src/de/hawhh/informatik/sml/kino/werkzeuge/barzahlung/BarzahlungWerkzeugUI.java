@@ -17,10 +17,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * Die UI des {@link BarzahlungWrkzeug}.
+ * Die UI des {@link BarzahlungWerkzeug}.
  * 
  * @author JPRitter
  * @version SoSe 2018
@@ -54,6 +55,7 @@ public class BarzahlungWerkzeugUI
 		_stage = new Stage();
 		_stage.setTitle(TITEL);
 		_hauptPanel = erstellePanel();
+		_stage.initModality(Modality.APPLICATION_MODAL); //hier auskommentieren, falls dieses Fenster nicht immer im Vordergrund sein soll
 	}
 
 	private BorderPane erstellePanel()
