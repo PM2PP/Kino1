@@ -7,9 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -42,7 +39,9 @@ public class BarzahlungWerkzeugUI
 	private Button _okButton;
 
 	private Label _preisLabel;
+	private Label _preisAnzeige;
 	private Label _rueckgeldLabel;
+	private Label _rueckgeldAnzeige;
 	private TextField _bargeldTextField;
 
 	private Label _bargeldLabel;
@@ -144,6 +143,10 @@ public class BarzahlungWerkzeugUI
 		_preisLabel = new Label("Preis: ");
 		_preisLabel.setFont(Font.font("Tahoma", FontWeight.NORMAL, 25));
 		_barzahlungAuswahl.add(_preisLabel, 0, 1);
+		
+		_preisAnzeige = new Label();
+		_preisAnzeige.setFont(Font.font("Tahoma", FontWeight.NORMAL, 25));
+		_barzahlungAuswahl.add(_preisAnzeige, 1, 1);
 
 		// Text ticketPreisTextField = new Text("Preis: ");
 		// barzahlungAuswahl.add(ticketPreisTextField, 1, 1);
@@ -163,6 +166,11 @@ public class BarzahlungWerkzeugUI
 		_rueckgeldLabel.setFont(Font.font("TimesNewRoman", FontWeight.SEMI_BOLD, 30));
 		_rueckgeldLabel.setTextFill(Color.DARKRED);
 		_barzahlungAuswahl.add(_rueckgeldLabel, 0, 3);
+		
+		_rueckgeldAnzeige = new Label();
+		_rueckgeldAnzeige.setFont(Font.font("TimesNewRoman", FontWeight.SEMI_BOLD, 30));
+		_rueckgeldAnzeige.setTextFill(Color.DARKRED);
+		_barzahlungAuswahl.add(_rueckgeldAnzeige, 1, 3);
 
 		return _barzahlungAuswahl;
 
@@ -246,5 +254,15 @@ public class BarzahlungWerkzeugUI
 	public TextField getBargeldTextField()
 	{
 		return _bargeldTextField;
+	}
+	
+	public Label getPreisanzeige()
+	{
+		return _preisAnzeige;
+	}
+
+	public Label getRueckgeldanzeige()
+	{
+		return _rueckgeldAnzeige;
 	}
 }

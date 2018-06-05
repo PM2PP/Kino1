@@ -67,19 +67,28 @@ public class PlatzVerkaufsWerkzeug
 			public void handle(ActionEvent ae)
 			{
 				_barzahlungWerkzeug = new BarzahlungWerkzeug();
+				
+				int preis = _vorstellung.getPreisFuerPlaetze(_ui.getPlatzplan().getAusgewaehltePlaetze());
+				_barzahlungWerkzeug.getUI().getPreisanzeige().setText(preis + " Eurocent");
 
 				_barzahlungWerkzeug.getUI().getAbbruchButton().setOnAction(e ->
 				{
 					aktualisierePlatzplan();
 					_barzahlungWerkzeug.getUI().getStage().close();
 				});
-
+					
 				_barzahlungWerkzeug.getUI().getOkButton().setOnAction(e ->
 				{
-					verkaufePlaetze(_vorstellung);
-					_barzahlungWerkzeug.getUI().getStage().close();
+				    int gegeben = Integer.parseInt(_barzahlungWerkzeug.getUI().getBargeldTextField().getText().toString());
+				    if(preis <= gegeben)
+				    {
+				    	int rueckgeld = gegeben - preis;
+						_barzahlungWerkzeug.getUI().getRueckgeldanzeige().setText(rueckgeld + " Eurocent");	
+						verkaufePlaetze(_vorstellung);
+				    }			    	
+//					_barzahlungWerkzeug.getUI().getStage().close();					
 				});
-
+				
 			}
 		});
 
