@@ -110,7 +110,7 @@ public class PlatzVerkaufsWerkzeug
 			}
 		});
 	}
-
+//Test
 	/**
 	 * Reagiert darauf, dass sich die Menge der ausgewählten Plätze geändert hat.
 	 * 
