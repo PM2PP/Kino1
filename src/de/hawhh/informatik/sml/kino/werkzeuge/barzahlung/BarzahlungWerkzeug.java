@@ -1,12 +1,24 @@
 package de.hawhh.informatik.sml.kino.werkzeuge.barzahlung;
 
+import java.util.Observable;
+import java.util.Observer;
+
+import de.hawhh.informatik.sml.kino.werkzeuge.ObservableSubwerkzeug;
+import de.hawhh.informatik.sml.kino.werkzeuge.SubwerkzeugObserver;
+import de.hawhh.informatik.sml.kino.werkzeuge.platzverkauf.PlatzVerkaufsWerkzeug;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Pane;
 
-public class BarzahlungWerkzeug
+public class BarzahlungWerkzeug //extends ObservableSubwerkzeug
 {
 
 	// UI dieses Werkzeugs
 	private BarzahlungWerkzeugUI _ui;
+	private PlatzVerkaufsWerkzeug _platzVerkaufsWerkzeug;
 
 //	private PlatzVerkaufsWerkzeug _platzVerkaufsWerkzeug;
 //
@@ -21,16 +33,24 @@ public class BarzahlungWerkzeug
 
 		_ui = new BarzahlungWerkzeugUI();				
 		_ui.zeigeFenster();
+//		_platzVerkaufsWerkzeug = new PlatzVerkaufsWerkzeug();
+//		registriereBeobachter(_platzVerkaufsWerkzeug);
+//		bargeldAnzeige();
 //		registriereUIAktionen();
 	}
 
-//	private void registriereUIAktionen()
-//	{
+	private void registriereUIAktionen()
+	{
 //		preisAnzeige();
 //		rueckgeldAnzeige();
 //		bargeldAnzeige();
-//
-//	}
+//		_ui.getPreisanzeige().setOnAction(new EventHandler<ActionEvent>
+//		@Override
+//		public void handle(ActionEvent ae)
+//		{
+//			_ui.getPreisanzeige().setText(PlatzVerkaufsWerkzeug._preisFuerAuswahl + " Eurocent");
+//		}
+	}
 
 	/**
 	 * Der anzuzeigenden Gesamtpreis
@@ -46,6 +66,7 @@ public class BarzahlungWerkzeug
 //		preisTextField.setFont(Font.font("Tahoma", FontWeight.NORMAL, 25));
 //		_ui.getBarzahlungsAuswahl().add(preisTextField, 1, 1);
 //		_preis = preis;
+
 //	}
 //
 //	private void rueckgeldAnzeige()
@@ -60,11 +81,25 @@ public class BarzahlungWerkzeug
 //
 //	private void bargeldAnzeige()
 //	{
-		//FERTIG
-//		int bargeld = 20;
-//		int bargeld = Integer.parseInt(_ui.getBargeldTextField().toString());
-//		_bargeld = bargeld;
+//		    _ui.getBargeldTextField().textProperty().addListener((observable, oldValue, newValue) -> {
+//		    	
+//			if(textOfTextField() != null && !textOfTextField().matches("[0-9]*"))
+//			{
+//				Alert alert = new Alert(AlertType.INFORMATION, "Bitte nur Zahlen eingeben!");
+//				alert.showAndWait();
+//			}
+//			else if(textOfTextField() != null && textOfTextField().matches("[0-9]+"))
+//			{
+//				informiereUeberAenderung();
+//			}
+//		    });
 //	}
+		    
+    public String textOfTextField()
+    {
+    	return _ui.getBargeldTextField().getText().toString();
+    }
+
 
 	/**
 	 * Gibt das Panel dieses Subwerkzeugs zurück. Das Panel sollte von einem
@@ -80,6 +115,5 @@ public class BarzahlungWerkzeug
 	public BarzahlungWerkzeugUI getUI()
 	{
 		return _ui;
-	}
-	
+	}	
 }

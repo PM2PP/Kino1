@@ -68,24 +68,18 @@ public class KassenWerkzeug
      */
     private void erzeugeListenerFuerSubwerkzeuge()
     {
-        _datumAuswaehlWerkzeug.registriereBeobachter(new SubwerkzeugObserver()
-        {
-            @Override
-            public void reagiereAufAenderung()
-            {
-                setzeTagesplanFuerAusgewaehltesDatum();
-            }
-        });
+//        _datumAuswaehlWerkzeug.registriereBeobachter(new SubwerkzeugObserver()
+//        {
+//            @Override
+//            public void reagiereAufAenderung()
+//            {
+//                setzeTagesplanFuerAusgewaehltesDatum();
+//            }
+//        });
+        _datumAuswaehlWerkzeug.registriereBeobachter(() -> setzeTagesplanFuerAusgewaehltesDatum());//mit Lambda
 
         _vorstellungAuswaehlWerkzeug
-                .registriereBeobachter(new SubwerkzeugObserver()
-                {
-                    @Override
-                    public void reagiereAufAenderung()
-                    {
-                        setzeAusgewaehlteVorstellung();
-                    }
-                });
+                .registriereBeobachter(() -> setzeAusgewaehlteVorstellung());
     }
 
     /**
@@ -93,14 +87,15 @@ public class KassenWerkzeug
      */
     private void registriereUIAktionen()
     {
-        _ui.getBeendenButton().setOnAction(new EventHandler<ActionEvent>()
-                {
-                    @Override
-                    public void handle(ActionEvent ae)
-                    {
-                        _ui.schliesseFenster();
-                    }
-                });
+//        _ui.getBeendenButton().setOnAction(new EventHandler<ActionEvent>()
+//                {
+//                    @Override
+//                    public void handle(ActionEvent ae)
+//                    {
+//                        _ui.schliesseFenster();
+//                    }
+//                });
+    	_ui.getBeendenButton().setOnAction(ae -> _ui.schliesseFenster());
     }
 
     /**

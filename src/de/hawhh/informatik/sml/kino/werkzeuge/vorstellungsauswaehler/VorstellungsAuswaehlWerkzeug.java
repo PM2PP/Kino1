@@ -112,20 +112,20 @@ public class VorstellungsAuswaehlWerkzeug extends ObservableSubwerkzeug
      */
     private void registriereUIAktionen()
     {
-//        _ui.getVorstellungAuswahlList().getSelectionModel()
-//             .selectedItemProperty().addListener(event -> vorstellungWurdeAusgewaehlt());
         _ui.getVorstellungAuswahlList().getSelectionModel()
-            .selectedItemProperty().addListener(new ChangeListener<VorstellungsFormatierer>()
-                {
-                    @Override
-                    public void changed(
-                            ObservableValue<? extends VorstellungsFormatierer> arg0,
-                            VorstellungsFormatierer arg1,
-                            VorstellungsFormatierer arg2)
-                    {
-                        vorstellungWurdeAusgewaehlt();
-                    }
-                    
-                });
+             .selectedItemProperty().addListener(event -> vorstellungWurdeAusgewaehlt()); //mit Lambda ... statt event: (arg0, arg1, arg2)?
+//        _ui.getVorstellungAuswahlList().getSelectionModel()
+//            .selectedItemProperty().addListener(new ChangeListener<VorstellungsFormatierer>()
+//                {
+//                    @Override
+//                    public void changed(
+//                            ObservableValue<? extends VorstellungsFormatierer> arg0,
+//                            VorstellungsFormatierer arg1,
+//                            VorstellungsFormatierer arg2)
+//                    {
+//                        vorstellungWurdeAusgewaehlt();
+//                    }
+//                    
+//                });
     }
 }

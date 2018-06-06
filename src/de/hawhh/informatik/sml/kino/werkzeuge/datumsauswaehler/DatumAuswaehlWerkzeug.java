@@ -124,22 +124,22 @@ public class DatumAuswaehlWerkzeug extends ObservableSubwerkzeug
      */
     private void registriereUIAktionen()
     {
-        _zurueckButton.setOnAction(new EventHandler<ActionEvent>()
+        _zurueckButton.setOnAction(ae -> //statt: new EventHandler<ActionEvent>()
                 {
-                    @Override
-                    public void handle(ActionEvent ae)
-                    {
+//                    @Override
+//                    public void handle(ActionEvent ae)
+//                    {
                         zurueckButtonWurdeGedrueckt();
-                    }
+//                    }
                 });
         
-        _weiterButton.setOnAction(new EventHandler<ActionEvent>()
-                {
-                    @Override
-                    public void handle(ActionEvent ae)
-                    {
-                        zurueckButtonWurdeGedrueckt();
-                    }
-                });
+        _weiterButton.setOnAction(ae-> zurueckButtonWurdeGedrueckt());//new EventHandler<ActionEvent>() -> kürzer als oben
+                
+//                    @Override
+//                    public void handle(ActionEvent ae)
+//                    {
+                        
+//                    }
+                
     }
 }
