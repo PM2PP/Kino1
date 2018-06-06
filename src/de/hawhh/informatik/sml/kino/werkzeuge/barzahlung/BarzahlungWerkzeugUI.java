@@ -1,4 +1,4 @@
-package de.hawhh.informatik.sml.kino.werkzeuge.barzahlung; //Push
+package de.hawhh.informatik.sml.kino.werkzeuge.barzahlung;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -46,6 +46,8 @@ public class BarzahlungWerkzeugUI
 	private TextField _bargeldTextField;
 
 	private Label _bargeldLabel;
+
+	private Text _info;
 
 	/**
 	 * Initialisiert die UI.
@@ -164,7 +166,7 @@ public class BarzahlungWerkzeugUI
 		// Text rueckgeldTextField = new Text("Rückgeld: ");
 		// barzahlungAuswahl.add(rueckgeldTextField, 1, 3);
 
-		_rueckgeldLabel = new Label("Rueckgeld: ");
+		_rueckgeldLabel = new Label("Rückgeld: ");
 		_rueckgeldLabel.setFont(Font.font("TimesNewRoman", FontWeight.SEMI_BOLD, 30));
 		_rueckgeldLabel.setTextFill(Color.DARKRED);
 		_barzahlungAuswahl.add(_rueckgeldLabel, 0, 3);
@@ -173,6 +175,9 @@ public class BarzahlungWerkzeugUI
 		_rueckgeldAnzeige.setFont(Font.font("TimesNewRoman", FontWeight.SEMI_BOLD, 30));
 		_rueckgeldAnzeige.setTextFill(Color.DARKRED);
 		_barzahlungAuswahl.add(_rueckgeldAnzeige, 1, 3);
+		
+	    _info = new Text();
+		_barzahlungAuswahl.add(_info, 1, 4);
 
 		return _barzahlungAuswahl;
 
@@ -247,7 +252,7 @@ public class BarzahlungWerkzeugUI
 	 */
 	public void zeigeFenster()
 	{
-		_stage.showAndWait();
+		_stage.show();
 	}
 
 	/**
@@ -266,5 +271,9 @@ public class BarzahlungWerkzeugUI
 	public Label getRueckgeldanzeige()
 	{
 		return _rueckgeldAnzeige;
+	}
+	public Text getInfo()
+	{
+		return _info;
 	}
 }

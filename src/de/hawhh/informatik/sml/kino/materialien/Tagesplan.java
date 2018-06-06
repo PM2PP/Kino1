@@ -20,20 +20,21 @@ public class Tagesplan
 
     // Der Comparator wird zur Sortierung der Vorstellungen innerhalb eines
     // Tagesplans verwendet.
-    private static Comparator<Vorstellung> _vergleichNachAnfangszeit = new Comparator<Vorstellung>()
+    private static Comparator<Vorstellung> _vergleichNachAnfangszeit = //new Comparator<Vorstellung>()
+     (vorstellung1, vorstellung2) ->
     {
-        @Override
-        public int compare(Vorstellung v1, Vorstellung v2)
-        {
-            assert v1 != null : "Vorbedingung verletzt: v1 != null";
-            assert v2 != null : "Vorbedingung verletzt: v2 != null";
+//        @Override
+//        public int compare(Vorstellung v1, Vorstellung v2)
+//        {
+            assert vorstellung1 != null : "Vorbedingung verletzt: v1 != null";
+            assert vorstellung2 != null : "Vorbedingung verletzt: v2 != null";
 
             // Der Vergleich der Anfangszeiten reicht hier aus, weil in
             // einem Tagesplan sowieso nur Vorstellungen mit gleichem Datum
             // laufen.
-            return v1.getAnfangszeit().compareTo(v2.getAnfangszeit());
-        }
-    };
+            return vorstellung1.getAnfangszeit().compareTo(vorstellung2.getAnfangszeit());
+        };
+//
 
     /**
      * Initialisiert einen neuen, leeren Tagesplan.
