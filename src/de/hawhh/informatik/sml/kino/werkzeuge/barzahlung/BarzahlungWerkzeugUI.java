@@ -247,7 +247,7 @@ public class BarzahlungWerkzeugUI
 	 */
 	public void zeigeFenster()
 	{
-		_stage.show();
+		_stage.showAndWait();
 	}
 
 	/**

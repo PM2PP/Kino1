@@ -98,6 +98,14 @@ public class PlatzVerkaufsWerkzeug implements Observer
 		{
 				_barzahlungWerkzeug = new BarzahlungWerkzeug(_preisFuerAuswahl, this);
 				
+				if(_barzahlungWerkzeug.verkauft())
+				{
+					verkaufePlaetze(_vorstellung);
+				}
+				else 
+				{
+					aktualisierePlatzplan();
+				}
 //				int preis = _vorstellung.getPreisFuerPlaetze(_ui.getPlatzplan().getAusgewaehltePlaetze());
 						
 //				_barzahlungWerkzeug.getUI().getPreisanzeige().setText(_preisFuerAuswahl + " Eurocent");
@@ -299,13 +307,13 @@ public class PlatzVerkaufsWerkzeug implements Observer
 	@Override
 	public void update(Observable arg0, Object arg1)
 	{
-		if((Boolean) arg1)
-		{
-			verkaufePlaetze(_vorstellung);			
-		}
-		else
-		{
-			aktualisierePlatzplan();
-		}		
+//		if((Boolean) arg1)
+//		{
+//			verkaufePlaetze(_vorstellung);			
+//		}
+//		else
+//		{
+//			aktualisierePlatzplan();
+//		}		
 	}
 }

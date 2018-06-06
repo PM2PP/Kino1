@@ -36,7 +36,7 @@ public class BarzahlungWerkzeug extends Observable
 	{
 
 		_ui = new BarzahlungWerkzeugUI();				
-		_ui.zeigeFenster();
+//		_ui.zeigeFenster();
 		addObserver(observer);
 		_preis = preis;
 		_verkauft = new Boolean(false);
@@ -44,6 +44,7 @@ public class BarzahlungWerkzeug extends Observable
 		preisAnzeige();
 		okButton();
 		abbruchButton();
+		_ui.zeigeFenster();
 //		registriereUIAktionen();
 	}
 
