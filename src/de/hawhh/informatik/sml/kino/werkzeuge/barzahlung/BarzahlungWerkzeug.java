@@ -2,7 +2,9 @@ package de.hawhh.informatik.sml.kino.werkzeuge.barzahlung;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
+import de.hawhh.informatik.sml.kino.fachwerte.Platz;
 import de.hawhh.informatik.sml.kino.werkzeuge.ObservableSubwerkzeug;
 import de.hawhh.informatik.sml.kino.werkzeuge.SubwerkzeugObserver;
 import de.hawhh.informatik.sml.kino.werkzeuge.platzverkauf.PlatzVerkaufsWerkzeug;
@@ -13,12 +15,14 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Pane;
 
-public class BarzahlungWerkzeug //extends ObservableSubwerkzeug
+public class BarzahlungWerkzeug extends Observable
 {
 
 	// UI dieses Werkzeugs
 	private BarzahlungWerkzeugUI _ui;
-	private PlatzVerkaufsWerkzeug _platzVerkaufsWerkzeug;
+//	private PlatzVerkaufsWerkzeug _platzVerkaufsWerkzeug;
+	private int _preis;
+	Boolean _verkauft;
 
 //	private PlatzVerkaufsWerkzeug _platzVerkaufsWerkzeug;
 //
@@ -28,14 +32,18 @@ public class BarzahlungWerkzeug //extends ObservableSubwerkzeug
 //	private int _bargeld;
 //	private VorstellungsAuswaehlWerkzeug _vorstellungsAuswaehlWerkzeug;
 
-	public BarzahlungWerkzeug()
+	public BarzahlungWerkzeug(int preis, Observer observer)
 	{
 
 		_ui = new BarzahlungWerkzeugUI();				
 		_ui.zeigeFenster();
-//		_platzVerkaufsWerkzeug = new PlatzVerkaufsWerkzeug();
-//		registriereBeobachter(_platzVerkaufsWerkzeug);
-//		bargeldAnzeige();
+		addObserver(observer);
+		_preis = preis;
+		_verkauft = new Boolean(false);
+		bargeldAnzeige();
+		preisAnzeige();
+		okButton();
+		abbruchButton();
 //		registriereUIAktionen();
 	}
 
@@ -55,8 +63,9 @@ public class BarzahlungWerkzeug //extends ObservableSubwerkzeug
 	/**
 	 * Der anzuzeigenden Gesamtpreis
 	 */
-//	private void preisAnzeige()
-//	{
+	private void preisAnzeige()
+	{
+		_ui.getPreisanzeige().setText(_preis + " Eurocent");
 		// TODO
 //		int preis = 10;
 		// int preis =
@@ -67,37 +76,97 @@ public class BarzahlungWerkzeug //extends ObservableSubwerkzeug
 //		_ui.getBarzahlungsAuswahl().add(preisTextField, 1, 1);
 //		_preis = preis;
 
-//	}
+	}
 //
-//	private void rueckgeldAnzeige()
-//	{
+	private void rueckgeldAnzeige()
+	{
+		int rueckgeld;
+		if(textOfTextField().isEmpty())
+		{
+			_ui.getRueckgeldanzeige().setText(""); 
+		}
+		else
+		{
+    	rueckgeld = Integer.parseInt(textOfTextField()) - _preis;
+    	if(rueckgeld >= 0)
+    	{
+		_ui.getRueckgeldanzeige().setText(rueckgeld + " Eurocent");
+    	}
+    	else 
+    	{
+    		_ui.getRueckgeldanzeige().setText("");   		
+    	}
+		}
 //		int rueckgeld = _preis - _bargeld;
 //		Text rueckgeldTextField = new Text(rueckgeld + " Eurocent");
 //		rueckgeldTextField.setFont(Font.font("TimesNewRoman", FontWeight.NORMAL, 35));
 //		rueckgeldTextField.setFill(Color.DARKRED);
 //		_ui.getBarzahlungsAuswahl().add(rueckgeldTextField, 1, 3);
 //		_rueckgeld = rueckgeld;
-//	}
+	}
 //
-//	private void bargeldAnzeige()
-//	{
-//		    _ui.getBargeldTextField().textProperty().addListener((observable, oldValue, newValue) -> {
-//		    	
-//			if(textOfTextField() != null && !textOfTextField().matches("[0-9]*"))
+	private void bargeldAnzeige()
+	{
+		    _ui.getBargeldTextField().textProperty().addListener((observable, oldValue, newValue) -> {
+		    	
+//			if(!textOfTextField().matches("[0-9]+"))
 //			{
 //				Alert alert = new Alert(AlertType.INFORMATION, "Bitte nur Zahlen eingeben!");
 //				alert.showAndWait();
 //			}
-//			else if(textOfTextField() != null && textOfTextField().matches("[0-9]+"))
-//			{
-//				informiereUeberAenderung();
-//			}
-//		    });
-//	}
-		    
+		    if(textOfTextField().length() > 6 || !textOfTextField().matches("\\d+"))
+			{
+		    	_ui.getOkButton().setDisable(true);   	
+			}
+		    else
+		    {
+		    	_ui.getOkButton().setDisable(false);
+			if(textOfTextField().matches("[0-9]+"));
+			{
+				rueckgeldAnzeige();
+			}
+		    }
+		    });
+	}
+	
+	private void abbruchButton()
+	{
+	_ui.getAbbruchButton().setOnAction(e -> //Lambda
+	{
+		_verkauft = false;
+		setChanged();
+		notifyObservers(_verkauft);
+		_ui.getStage().close();
+	});
+	}
+	
+	private void okButton()
+	{
+	_ui.getOkButton().setOnAction(e -> //Lambda
+	{
+//		if(textOfTextField().length() > 6 || !textOfTextField().matches("\\d+"))
+//	    {
+//	    	_ui.getOkButton().setDisable(true);
+//	    	
+//	    }
+	    int gegeben = Integer.parseInt(_ui.getBargeldTextField().getText().toString());
+	    if(_preis <= gegeben)
+	    {
+			_verkauft = true;
+			setChanged();
+			notifyObservers(_verkauft);
+			_ui.getStage().close();
+	    }	
+	});
+	}	    
     public String textOfTextField()
     {
     	return _ui.getBargeldTextField().getText().toString();
+    }
+    
+    public boolean verkauft()
+    {
+    	return _verkauft;
     }
 
 
