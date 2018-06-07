@@ -21,29 +21,19 @@ public class BarzahlungWerkzeug extends Observable
 
 	// UI dieses Werkzeugs
 	private BarzahlungWerkzeugUI _ui;
-	// private PlatzVerkaufsWerkzeug _platzVerkaufsWerkzeug;
 	private int _preis;
 	Boolean _verkauft;
 
-	// private PlatzVerkaufsWerkzeug _platzVerkaufsWerkzeug;
-	//
-	// private Vorstellung _vorstellung;
-	// private int _preis;
-	// private int _rueckgeld;
-	// private int _bargeld;
-	// private VorstellungsAuswaehlWerkzeug _vorstellungsAuswaehlWerkzeug;
 
 	public BarzahlungWerkzeug(int preis, Observer observer)
 	{
 
 		_ui = new BarzahlungWerkzeugUI();
-		// _ui.zeigeFenster();
 		addObserver(observer);
 		_preis = preis;
 		_verkauft = new Boolean(false);
 		registriereUIAktionen();
 		_ui.zeigeFenster();
-		// registriereUIAktionen();
 	}
 
 	private void registriereUIAktionen()
@@ -60,17 +50,6 @@ public class BarzahlungWerkzeug extends Observable
 	private void preisAnzeige()
 	{
 		_ui.getPreisanzeige().setText(_preis + " Eurocent");
-		// TODO
-		// int preis = 10;
-		// int preis =
-		// _vorstellung.getPreisFuerPlaetze(_platzVerkauf.getUI().getPlatzplan().getAusgewaehltePlaetze());
-		// int preis =
-		// _vorstellungsAuswaehlWerkzeug.getAusgewaehlteVorstellung().getPreis();
-		// Text preisTextField = new Text(preis + " Eurocent");
-		// preisTextField.setFont(Font.font("Tahoma", FontWeight.NORMAL, 25));
-		// _ui.getBarzahlungsAuswahl().add(preisTextField, 1, 1);
-		// _preis = preis;
-
 	}
 
 	//
@@ -93,13 +72,6 @@ public class BarzahlungWerkzeug extends Observable
 				_ui.getRueckgeldanzeige().setText("");
 			}
 		}
-		// int rueckgeld = _preis - _bargeld;
-		// Text rueckgeldTextField = new Text(rueckgeld + " Eurocent");
-		// rueckgeldTextField.setFont(Font.font("TimesNewRoman", FontWeight.NORMAL,
-		// 35));
-		// rueckgeldTextField.setFill(Color.DARKRED);
-		// _ui.getBarzahlungsAuswahl().add(rueckgeldTextField, 1, 3);
-		// _rueckgeld = rueckgeld;
 	}
 
 	//
@@ -107,13 +79,6 @@ public class BarzahlungWerkzeug extends Observable
 	{
 		_ui.getBargeldTextField().textProperty().addListener((observable, oldValue, newValue) ->
 		{
-
-			// if(!textOfTextField().matches("[0-9]+"))
-			// {
-			// Alert alert = new Alert(AlertType.INFORMATION, "Bitte nur Zahlen eingeben!");
-			// alert.showAndWait();
-			// }
-
 			if(textOfTextField().isEmpty())
 			{
 				_ui.getOkButton().setDisable(true);
@@ -154,11 +119,6 @@ public class BarzahlungWerkzeug extends Observable
 		_ui.getOkButton().setDisable(true);
 		_ui.getOkButton().setOnAction(e -> // Lambda
 		{
-			// if(textOfTextField().length() > 6 || !textOfTextField().matches("\\d+"))
-			// {
-			// _ui.getOkButton().setDisable(true);
-			//
-			// }
 			int gegeben = Integer.parseInt(_ui.getBargeldTextField().getText());
 			if (_preis <= gegeben)
 			{
