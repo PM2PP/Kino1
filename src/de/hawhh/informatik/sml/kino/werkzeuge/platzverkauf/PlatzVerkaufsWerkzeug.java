@@ -69,113 +69,18 @@ public class PlatzVerkaufsWerkzeug implements Observer
 	 */
 	private void registriereUIAktionen()
 	{
-
-//		_ui.getVerkaufenButton().setOnAction(new EventHandler<ActionEvent>()                   Auschnitt ohne Lambdas
-//		{
-//			@Override
-//			public void handle(ActionEvent ae)
-//			{
-//				_barzahlungWerkzeug = new BarzahlungWerkzeug();
-//				
-////				int preis = _vorstellung.getPreisFuerPlaetze(_ui.getPlatzplan().getAusgewaehltePlaetze());
-//						
-//				_barzahlungWerkzeug.getUI().getPreisanzeige().setText(_preisFuerAuswahl + " Eurocent");
-//
-//				_ui.getPlatzplan().addPlatzSelectionListener(new PlatzSelectionListener()
-//				{
-//					@Override
-//					public void auswahlGeaendert(PlatzSelectionEvent event)
-//					{
-//						reagiereAufNeuePlatzAuswahl(event.getAusgewaehltePlaetze());
-//						 if(_vorstellung.getPreisFuerPlaetze(_ui.getPlatzplan().getAusgewaehltePlaetze()) == 0)
-//						 {
-//							 _barzahlungWerkzeug.getUI().getStage().close();						 		 
-//						 }
-//						 _barzahlungWerkzeug.getUI().getPreisanzeige().setText(_preisFuerAuswahl + " Eurocent");
-//					}
-//				});
 		_ui.getVerkaufenButton().setOnAction(actionEvent -> //Lambda
 		{
 				_barzahlungWerkzeug = new BarzahlungWerkzeug(_preisFuerAuswahl, this);
 				
-//				int preis = _vorstellung.getPreisFuerPlaetze(_ui.getPlatzplan().getAusgewaehltePlaetze());
-						
-//				_barzahlungWerkzeug.getUI().getPreisanzeige().setText(_preisFuerAuswahl + " Eurocent");
-//
-//				_ui.getPlatzplan().addPlatzSelectionListener(event -> //Lambda
-//				{
-//						reagiereAufNeuePlatzAuswahl(event.getAusgewaehltePlaetze());
-//						 if(_vorstellung.getPreisFuerPlaetze(_ui.getPlatzplan().getAusgewaehltePlaetze()) == 0)
-//						 {
-//							 _barzahlungWerkzeug.getUI().getStage().close();						 		 
-//						 }
-//						 _barzahlungWerkzeug.getUI().getPreisanzeige().setText(_preisFuerAuswahl + " Eurocent");			
-//				});		
-
-			   		
-//				_barzahlungWerkzeug.getUI().getBargeldTextField().textProperty().addListener((observable, oldValue, newValue) -> {
-//					int gegeben;
-//					if(_barzahlungWerkzeug.getUI().getBargeldTextField().getText().toString().equals(""))
-//					{
-//				    gegeben = 0;
-//					}
-//					else 
-//					{
-//						gegeben = Integer.parseInt(_barzahlungWerkzeug.getUI().getBargeldTextField().getText().toString());
-//					}
-//				    if(_preisFuerAuswahl <= gegeben)
-//				    {
-//				    	int rueckgeld = gegeben - _preisFuerAuswahl;
-//						_barzahlungWerkzeug.getUI().getRueckgeldanzeige().setText(rueckgeld + " Eurocent");	
-//				    }
-//				    else
-//				    {
-//				    	_barzahlungWerkzeug.getUI().getRueckgeldanzeige().setText("");   	
-//				    };
-//				});
-				
-//				_barzahlungWerkzeug.getUI().getBargeldTextField().setOnAction(e ->
-//				{	
-//					    _barzahlungWerkzeug.getUI().getPreisanzeige().setText(_preisFuerAuswahl + " Eurocent");
-//						int gegeben;
-//						if(_barzahlungWerkzeug.getUI().getBargeldTextField().getText().toString().equals(""))
-//						{
-//					    gegeben = 0;
-//						}
-//						else 
-//						{
-//							gegeben = Integer.parseInt(_barzahlungWerkzeug.getUI().getBargeldTextField().getText().toString());
-//						}
-//					    if(_preisFuerAuswahl <= gegeben)
-//					    {
-//					    	int rueckgeld = gegeben - _preisFuerAuswahl;
-//							_barzahlungWerkzeug.getUI().getRueckgeldanzeige().setText(rueckgeld + " Eurocent");	
-//					    }
-//					    else
-//					    {
-//					    	_barzahlungWerkzeug.getUI().getRueckgeldanzeige().setText("");   	
-//					    }
-//				});	
-
-//				_barzahlungWerkzeug.getUI().getAbbruchButton().setOnAction(e -> //Lambda
-//				{
-//					aktualisierePlatzplan();
-//					_barzahlungWerkzeug.getUI().getStage().close();
-//				});
-					
-//				_barzahlungWerkzeug.getUI().getOkButton().setOnAction(e -> //Lambda
-//				{
-//				    int gegeben = Integer.parseInt(_barzahlungWerkzeug.getUI().getBargeldTextField().getText().toString());
-//				    if(_preisFuerAuswahl <= gegeben)
-//				    {
-////				    	int rueckgeld = gegeben - _preisFuerAuswahl;
-////						_barzahlungWerkzeug.getUI().getRueckgeldanzeige().setText(rueckgeld + " Eurocent");	
-//						verkaufePlaetze(_vorstellung);
-//						_barzahlungWerkzeug.getUI().getStage().close();
-//				    }			    						
-//				});
-				
-			
+				if(_barzahlungWerkzeug.verkauft())
+				{
+					verkaufePlaetze(_vorstellung);
+				}
+				else 
+				{
+					aktualisierePlatzplan();
+				}	
 		});
 
 		_ui.getStornierenButton().setOnAction(ae -> //Lambda
@@ -299,13 +204,13 @@ public class PlatzVerkaufsWerkzeug implements Observer
 	@Override
 	public void update(Observable arg0, Object arg1)
 	{
-		if((Boolean) arg1)
-		{
-			verkaufePlaetze(_vorstellung);			
-		}
-		else
-		{
-			aktualisierePlatzplan();
-		}		
+//		if((Boolean) arg1)
+//		{
+//			verkaufePlaetze(_vorstellung);			
+//		}
+//		else
+//		{
+//			aktualisierePlatzplan();
+//		}		
 	}
 }
