@@ -25,12 +25,65 @@ public final class Geldbetrag
 		assert eurocent >= 0 : "Vorbedingung verletzt: eurocent >= 0";
 		return new Geldbetrag(eurocent);
 	}
+	
+	
+	/**
+	 * Wählt einen Geldbetrag aus.
+	 * 
+	 * @param eurocent
+	 *            Der Betrag als String bsp. "10,00"
+	 * 
+	 * @require eurocent.matches"(\\d+),?(\\d\\d)";
+	 */
+	public static Geldbetrag getString(String eurocent)
+	{
+		assert eurocent.matches("(\\d+),?(\\d\\d)"): "Vorbedingung verletzt: eurocent.matches(\"(\\d+),?(\\d\\d)\")";
+		
+		if((char)eurocent.charAt(eurocent.length()-3) == ',')
+		{ 
+			eurocent.replace(",", "");
+		}
+		return new Geldbetrag(Integer.parseInt(eurocent));
+	}
+	
+	public static Geldbetrag addieren(Geldbetrag g1,Geldbetrag g2)
+	{ 
+		int gb1 = Integer.parseInt(g1.toString()); 
+		int gb2 = Integer.parseInt(g2.toString());
+		
+		int summe = gb1 + gb2; 
+		
+		return get(summe); 
+	}
+	
+	public static Geldbetrag subtrahieren(Geldbetrag g1,Geldbetrag g2)
+	{ 
+		int gb1 = Integer.parseInt(g1.toString()); 
+		int gb2 = Integer.parseInt(g2.toString());
+		
+		int summe = gb1 - gb2; 
+		
+		return get(summe); 
+	}
+	
+	public static Geldbetrag multiplizieren(Geldbetrag g1,int zahl)
+	{ 
+		int gb1 = Integer.parseInt(g1.toString()); 
+		
+		int summe = gb1 * zahl; 
+		
+		return get(summe); 
+	}
+
+	
+	
 
 	private Geldbetrag(int eurocent)
 	{
 		_euroAnteil = eurocent / 100;
 		_centAnteil = eurocent % 100;
 	}
+	
 
 	/**
 	 * Gibt den Eurobetrag ohne Cent zurück.
