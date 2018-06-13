@@ -45,7 +45,7 @@ public final class Geldbetrag
 	{
 		assert eurocent.matches("(\\d+),?(\\d\\d)") : "Vorbedingung verletzt: eurocent.matches(\"(\\d+),?(\\d\\d)\")";
 
-		String neu = ""; 
+		String neu = eurocent; 
 		if ((char) eurocent.charAt(eurocent.length() - 3) == ',')
 		{
 			neu = eurocent.replace(",", "");

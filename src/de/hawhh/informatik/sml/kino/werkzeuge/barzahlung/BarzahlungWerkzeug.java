@@ -91,18 +91,18 @@ public class BarzahlungWerkzeug extends Observable
 			{
 				_ui.getOkButton().setDisable(true);
 			}
-			else if (textOfTextField().length() > 6 || !textOfTextField().matches("\\d*"))
+			else if (textOfTextField().length() > 7 || !textOfTextField().matches("(\\d+\\d+),?(\\d\\d)"))
 			{
 				_ui.getOkButton().setDisable(true);
 				_ui.getInfo().setFill(Color.FIREBRICK);
-				_ui.getInfo().setText("Bitte höchstens 6 Ziffern eingeben!");
+				_ui.getInfo().setText("Eingabe nicht korrekt!");
 				_ui.getRueckgeldanzeige().setText("");
 			}
 			else
 			{
 				_ui.getOkButton().setDisable(false);
 				_ui.getInfo().setText("");
-				if (textOfTextField().matches("\\d+"))
+				if (textOfTextField().matches("(\\d+\\d+),?(\\d\\d)"))
 					;
 				{
 					rueckgeldAnzeige();
@@ -128,16 +128,15 @@ public class BarzahlungWerkzeug extends Observable
 		_ui.getOkButton().setOnAction(e -> // Lambda
 		{
 			Geldbetrag gegeben = Geldbetrag.getString(textOfTextField());
-			// ToDO gehts noch schöner ? error bei bestätigung von Ok bei 
-			// eingegebenn betrag kleiner als _preis (subtrahieren ? try catch .. )
-	
-				if (Geldbetrag.geldbetragInt(_preis.toString()) <= Geldbetrag.geldbetragInt(gegeben.toString()))
-				{
-					_verkauft = true;
-					setChanged();
-					notifyObservers(_verkauft);
-					_ui.getStage().close();
-				}
+			// TODO gehts noch schöner ? 
+
+			if (Geldbetrag.geldbetragInt(_preis.toString()) <= Geldbetrag.geldbetragInt(gegeben.toString()))
+			{
+				_verkauft = true;
+				setChanged();
+				notifyObservers(_verkauft);
+				_ui.getStage().close();
+			}
 		});
 	}
 
