@@ -3,6 +3,7 @@ package de.hawhh.informatik.sml.kino.materialien;
 import java.util.Set;
 
 import de.hawhh.informatik.sml.kino.fachwerte.Datum;
+import de.hawhh.informatik.sml.kino.fachwerte.Geldbetrag;
 import de.hawhh.informatik.sml.kino.fachwerte.Platz;
 import de.hawhh.informatik.sml.kino.fachwerte.Uhrzeit;
 
@@ -22,7 +23,7 @@ public class Vorstellung
     private Uhrzeit _anfangszeit;
     private Uhrzeit _endzeit;
     private Datum _datum;
-    private int _preis;
+    private Geldbetrag _preis;
     private boolean[][] _verkauft;
     private int _anzahlVerkauftePlaetze;
 
@@ -64,7 +65,7 @@ public class Vorstellung
         _anfangszeit = anfangszeit;
         _endzeit = endzeit;
         _datum = datum;
-        _preis = preis;
+        _preis = Geldbetrag.get(preis);
         _verkauft = new boolean[kinosaal.getAnzahlReihen()][kinosaal
                 .getAnzahlSitzeProReihe()];
         _anzahlVerkauftePlaetze = 0;
@@ -121,11 +122,11 @@ public class Vorstellung
     }
 
     /**
-     * Gibt den Verkaufspreis als int für Karten zu dieser Vorstellung zurück.
+     * Gibt den Verkaufspreis als Geldbetrag für Karten zu dieser Vorstellung zurück.
      * 
      * @ensure result > 0
      */
-    public int getPreis()
+    public Geldbetrag getPreis()
     {
         return _preis;
     }
@@ -172,17 +173,17 @@ public class Vorstellung
      * 
      * @param plaetze die Sitzplätze.
      * 
-     * @return Gesamtpreis als int
+     * @return Gesamtpreis als Geldbetrag
      * 
      * @require plaetze != null
      * @require hatPlaetze(plaetze)
      */
-    public int getPreisFuerPlaetze(Set<Platz> plaetze)
+    public Geldbetrag getPreisFuerPlaetze(Set<Platz> plaetze)
     {
         assert plaetze != null : "Vorbedingung verletzt: plaetze != null";
         assert hatPlaetze(plaetze) : "Vorbedingung verletzt: hatPlaetze(plaetze)";
 
-        return _preis * plaetze.size();
+        return Geldbetrag.multiplizieren(_preis, plaetze.size());
     }
 
     /**

@@ -4,6 +4,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
+import de.hawhh.informatik.sml.kino.fachwerte.Geldbetrag;
 import de.hawhh.informatik.sml.kino.fachwerte.Platz;
 import de.hawhh.informatik.sml.kino.werkzeuge.ObservableSubwerkzeug;
 import de.hawhh.informatik.sml.kino.werkzeuge.SubwerkzeugObserver;
@@ -21,11 +22,10 @@ public class BarzahlungWerkzeug extends Observable
 
 	// UI dieses Werkzeugs
 	private BarzahlungWerkzeugUI _ui;
-	private int _preis;
+	private Geldbetrag _preis;
 	Boolean _verkauft;
 
-
-	public BarzahlungWerkzeug(int preis, Observer observer)
+	public BarzahlungWerkzeug(Geldbetrag preis, Observer observer)
 	{
 
 		_ui = new BarzahlungWerkzeugUI();
@@ -49,28 +49,36 @@ public class BarzahlungWerkzeug extends Observable
 	 */
 	private void preisAnzeige()
 	{
-		_ui.getPreisanzeige().setText(_preis + " Eurocent");
+		_ui.getPreisanzeige().setText(_preis.getFormatiertenString() + "€");
 	}
 
 	//
 	private void rueckgeldAnzeige()
 	{
-		int rueckgeld;
+		Geldbetrag rueckgeld;
 		if (textOfTextField().isEmpty())
 		{
 			_ui.getRueckgeldanzeige().setText("");
 		}
 		else
 		{
-			rueckgeld = Integer.parseInt(textOfTextField()) - _preis;
-			if (rueckgeld >= 0)
+			try
 			{
-				_ui.getRueckgeldanzeige().setText(rueckgeld + " Eurocent");
+				rueckgeld = Geldbetrag.subtrahieren(Geldbetrag.getString(textOfTextField()), _preis);
+				_ui.getRueckgeldanzeige().setText(rueckgeld.getFormatiertenString() + "€");
 			}
-			else
+			catch (AssertionError a)
 			{
 				_ui.getRueckgeldanzeige().setText("");
 			}
+			// if (rueckgeld >= 0)
+			// {
+			// _ui.getRueckgeldanzeige().setText(rueckgeld + " Eurocent");
+			// }
+			// else
+			// {
+			// _ui.getRueckgeldanzeige().setText("");
+			// }
 		}
 	}
 
@@ -79,7 +87,7 @@ public class BarzahlungWerkzeug extends Observable
 	{
 		_ui.getBargeldTextField().textProperty().addListener((observable, oldValue, newValue) ->
 		{
-			if(textOfTextField().isEmpty())
+			if (textOfTextField().isEmpty())
 			{
 				_ui.getOkButton().setDisable(true);
 			}
@@ -119,20 +127,23 @@ public class BarzahlungWerkzeug extends Observable
 		_ui.getOkButton().setDisable(true);
 		_ui.getOkButton().setOnAction(e -> // Lambda
 		{
-			int gegeben = Integer.parseInt(_ui.getBargeldTextField().getText());
-			if (_preis <= gegeben)
-			{
-				_verkauft = true;
-				setChanged();
-				notifyObservers(_verkauft);
-				_ui.getStage().close();
-			}
+			Geldbetrag gegeben = Geldbetrag.getString(textOfTextField());
+			// ToDO gehts noch schöner ? error bei bestätigung von Ok bei 
+			// eingegebenn betrag kleiner als _preis (subtrahieren ? try catch .. )
+	
+				if (Geldbetrag.geldbetragInt(_preis.toString()) <= Geldbetrag.geldbetragInt(gegeben.toString()))
+				{
+					_verkauft = true;
+					setChanged();
+					notifyObservers(_verkauft);
+					_ui.getStage().close();
+				}
 		});
 	}
 
 	public String textOfTextField()
 	{
-		return _ui.getBargeldTextField().getText().toString();
+		return _ui.getBargeldTextField().getText();
 	}
 
 	public boolean verkauft()

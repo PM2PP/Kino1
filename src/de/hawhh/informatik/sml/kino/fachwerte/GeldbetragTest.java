@@ -90,7 +90,7 @@ public class GeldbetragTest
     	   assertEquals(Geldbetrag.addieren(betrag1,betrag3), Geldbetrag.get(300)); 
     	   
     	   assertEquals(Geldbetrag.subtrahieren(betrag1,betrag2), Geldbetrag.get(0)); 
-    	   assertEquals(Geldbetrag.subtrahieren(betrag1,betrag3), Geldbetrag.get(100)); 
+    	   assertEquals(Geldbetrag.subtrahieren(betrag3,betrag1), Geldbetrag.get(100)); 
     }
     
     @Test 
@@ -103,8 +103,8 @@ public class GeldbetragTest
     	   assertEquals(Geldbetrag.multiplizieren(betrag1,2), Geldbetrag.get(200)); 
     	   assertEquals(Geldbetrag.multiplizieren(betrag2,5), Geldbetrag.get(500)); 
     	   
-    	   assertEquals(Geldbetrag.multiplizieren(betrag3,10), Geldbetrag.get(3000)); 
-    	   assertEquals(Geldbetrag.multiplizieren(betrag1,100), Geldbetrag.get(20000)); 
+    	   assertEquals(Geldbetrag.multiplizieren(betrag3,10), Geldbetrag.get(2000)); 
+    	   assertEquals(Geldbetrag.multiplizieren(betrag1,100), Geldbetrag.get(10000)); 
     }
 
     @Test

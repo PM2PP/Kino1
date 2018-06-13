@@ -11,7 +11,14 @@ public final class Geldbetrag
 
 	private final int _euroAnteil;
 	private final int _centAnteil;
-
+	
+	
+	private Geldbetrag(int eurocent)
+	{
+		_euroAnteil = eurocent / 100;
+		_centAnteil = eurocent % 100;
+	}
+	
 	/**
 	 * Wählt einen Geldbetrag aus.
 	 * 
@@ -25,65 +32,102 @@ public final class Geldbetrag
 		assert eurocent >= 0 : "Vorbedingung verletzt: eurocent >= 0";
 		return new Geldbetrag(eurocent);
 	}
-	
-	
+
 	/**
 	 * Wählt einen Geldbetrag aus.
 	 * 
 	 * @param eurocent
-	 *            Der Betrag als String bsp. "10,00"
+	 *            Der Geldbetrag als String bsp. "10,00"
 	 * 
 	 * @require eurocent.matches"(\\d+),?(\\d\\d)";
 	 */
 	public static Geldbetrag getString(String eurocent)
 	{
-		assert eurocent.matches("(\\d+),?(\\d\\d)"): "Vorbedingung verletzt: eurocent.matches(\"(\\d+),?(\\d\\d)\")";
-		
-		if((char)eurocent.charAt(eurocent.length()-3) == ',')
-		{ 
-			eurocent.replace(",", "");
+		assert eurocent.matches("(\\d+),?(\\d\\d)") : "Vorbedingung verletzt: eurocent.matches(\"(\\d+),?(\\d\\d)\")";
+
+		String neu = ""; 
+		if ((char) eurocent.charAt(eurocent.length() - 3) == ',')
+		{
+			neu = eurocent.replace(",", "");
 		}
-		return new Geldbetrag(Integer.parseInt(eurocent));
-	}
-	
-	public static Geldbetrag addieren(Geldbetrag g1,Geldbetrag g2)
-	{ 
-		int gb1 = Integer.parseInt(g1.toString()); 
-		int gb2 = Integer.parseInt(g2.toString());
-		
-		int summe = gb1 + gb2; 
-		
-		return get(summe); 
-	}
-	
-	public static Geldbetrag subtrahieren(Geldbetrag g1,Geldbetrag g2)
-	{ 
-		int gb1 = Integer.parseInt(g1.toString()); 
-		int gb2 = Integer.parseInt(g2.toString());
-		
-		int summe = gb1 - gb2; 
-		
-		return get(summe); 
-	}
-	
-	public static Geldbetrag multiplizieren(Geldbetrag g1,int zahl)
-	{ 
-		int gb1 = Integer.parseInt(g1.toString()); 
-		
-		int summe = gb1 * zahl; 
-		
-		return get(summe); 
+		return new Geldbetrag(Integer.parseInt(neu));
 	}
 
-	
-	
-
-	private Geldbetrag(int eurocent)
+	/**
+	 * Addiert zwei Geldbeträge.
+	 * 
+	 * @param g1
+	 *            der erste Geldbetrag
+	 * @param g2
+	 *            der zweite Geldebetrag
+	 *            
+	 * @return einen Geldbetrag aus der summe der beiden Geldbeträge
+	 */
+	public static Geldbetrag addieren(Geldbetrag g1, Geldbetrag g2)
 	{
-		_euroAnteil = eurocent / 100;
-		_centAnteil = eurocent % 100;
+		int gb1 = geldbetragInt(g1.toString());
+		int gb2 = geldbetragInt(g2.toString());
+
+		int summe = gb1 + gb2;
+
+		return get(summe);
 	}
-	
+
+	/**
+	 * Subtrahiert zwei Geldbeträge.
+	 * 
+	 * @param g1
+	 *            der erste Geldbetrag
+	 * @param g2
+	 *            der zweite Geldebetrag
+	 *            
+	 * @return einen Geldbetrag aus der summe der beiden Geldbeträge
+	 */
+	public static Geldbetrag subtrahieren(Geldbetrag g1, Geldbetrag g2)
+	{
+		//assert Integer.parseInt(g1.toString()) >= Integer.parseInt(g2.toString()): "Vorbedingung verletzt: g1 >= g2";
+		int gb1 = geldbetragInt(g1.toString());
+		int gb2 = geldbetragInt(g2.toString());
+
+		int summe = gb1 - gb2;
+
+		return get(summe);
+	}
+
+	/**
+	 * Multipliziert einen Geldbetrag mit einer belibigen Zahl.
+	 * 
+	 * @param g1
+	 *            der Geldbetrag
+	 * @param zahl
+	 *            der Multiplikator
+	 *            
+	 * @return den Multiplizierten Geldbetrag
+	 */
+	public static Geldbetrag multiplizieren(Geldbetrag g1, int zahl)
+	{
+		int gb1 = geldbetragInt(g1.toString());
+
+		int summe = gb1 * zahl;
+
+		return get(summe);
+	}
+
+	/**
+	 * Geldbetrag als String in passenden Int für berechnungen 
+	 * 
+	 * @param eurocent
+	 *            Der Geldbetrag als String bsp. "10,00"
+	 * 
+	 * @require eurocent.matches"(\\d+),?(\\d\\d)";
+	 */
+	public static int geldbetragInt(String eurocent)
+	{
+		
+		String neu = eurocent.replace(",",""); 
+		
+		return Integer.parseInt(neu);
+	}
 
 	/**
 	 * Gibt den Eurobetrag ohne Cent zurück.

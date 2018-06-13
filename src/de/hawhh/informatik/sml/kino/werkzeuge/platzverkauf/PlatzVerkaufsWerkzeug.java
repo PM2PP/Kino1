@@ -11,7 +11,7 @@ import javax.swing.event.DocumentListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
-
+import de.hawhh.informatik.sml.kino.fachwerte.Geldbetrag;
 import de.hawhh.informatik.sml.kino.fachwerte.Platz;
 import de.hawhh.informatik.sml.kino.materialien.Kinosaal;
 import de.hawhh.informatik.sml.kino.materialien.Vorstellung;
@@ -33,7 +33,7 @@ import de.hawhh.informatik.sml.kino.werkzeuge.barzahlung.BarzahlungWerkzeugUI;
  */
 public class PlatzVerkaufsWerkzeug implements Observer
 {
-	private int _preisFuerAuswahl;
+	private Geldbetrag _preisFuerAuswahl;
 
 	// Die aktuelle Vorstellung, deren Plätze angezeigt werden. Kann null sein.
 	private Vorstellung _vorstellung;
@@ -115,8 +115,8 @@ public class PlatzVerkaufsWerkzeug implements Observer
 
 		if (istVerkaufenMoeglich(plaetze))
 		{
-			int preis = _vorstellung.getPreisFuerPlaetze(plaetze);
-			_ui.getPreisLabel().setText("Gesamtpreis: " + preis + " Eurocent");
+			Geldbetrag preis = _vorstellung.getPreisFuerPlaetze(plaetze);
+			_ui.getPreisLabel().setText("Gesamtpreis: " + preis.toString() + " €");
 			_preisFuerAuswahl = preis;
 		}
 		else
