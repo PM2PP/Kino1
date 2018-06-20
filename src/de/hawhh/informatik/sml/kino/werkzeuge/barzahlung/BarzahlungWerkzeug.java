@@ -65,7 +65,11 @@ public class BarzahlungWerkzeug extends Observable
 			try
 			{
 				rueckgeld = Geldbetrag.subtrahieren(Geldbetrag.getString(textOfTextField()), _preis);
-				_ui.getRueckgeldanzeige().setText(rueckgeld.getFormatiertenString() + "€");
+				if (Geldbetrag.geldbetragInt(rueckgeld.toString()) >= 0)
+				{
+					_ui.getRueckgeldanzeige().setText(rueckgeld.getFormatiertenString() + "€");
+				}
+
 			}
 			catch (AssertionError a)
 			{
@@ -128,7 +132,7 @@ public class BarzahlungWerkzeug extends Observable
 		_ui.getOkButton().setOnAction(e -> // Lambda
 		{
 			Geldbetrag gegeben = Geldbetrag.getString(textOfTextField());
-			// TODO gehts noch schöner ? 
+			// TODO gehts noch schöner ?
 
 			if (Geldbetrag.geldbetragInt(_preis.toString()) <= Geldbetrag.geldbetragInt(gegeben.toString()))
 			{

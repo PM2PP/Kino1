@@ -4,10 +4,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.Pane;
@@ -69,31 +65,36 @@ public class PlatzVerkaufsWerkzeug implements Observer
 	 */
 	private void registriereUIAktionen()
 	{
-		_ui.getVerkaufenButton().setOnAction(actionEvent -> //Lambda
+		_ui.getVerkaufenButton().setOnAction(actionEvent -> // Lambda
 		{
-				_barzahlungWerkzeug = new BarzahlungWerkzeug(_preisFuerAuswahl, this);
-				
-				if(_barzahlungWerkzeug.verkauft())
-				{
-					verkaufePlaetze(_vorstellung);
-				}
-				else 
-				{
-					aktualisierePlatzplan();
-				}	
+			_barzahlungWerkzeug = new BarzahlungWerkzeug(_preisFuerAuswahl, this);
+
+			if (_barzahlungWerkzeug.verkauft())
+			{
+				verkaufePlaetze(_vorstellung);
+			}
+			else
+			{
+				aktualisierePlatzplan();
+			}
 		});
 
-		_ui.getStornierenButton().setOnAction(ae -> //Lambda
+		_ui.getStornierenButton().setOnAction(ae -> // Lambda
 		{
-				stornierePlaetze(_vorstellung);
+			stornierePlaetze(_vorstellung);
 		});
 
-		_ui.getPlatzplan().addPlatzSelectionListener(event -> //Lambda
+		_ui.getPlatzplan().addPlatzSelectionListener(event -> // Lambda
 		{
-				reagiereAufNeuePlatzAuswahl(event.getAusgewaehltePlaetze());
+			reagiereAufNeuePlatzAuswahl(event.getAusgewaehltePlaetze());
+			// if(_vorstellung != null)
+			// {
+			// auswahlPlaetze(_vorstellung);
+			// }
 		});
 	}
-//Test
+
+	// Test
 	/**
 	 * Reagiert darauf, dass sich die Menge der ausgewählten Plätze geändert hat.
 	 * 
@@ -105,6 +106,24 @@ public class PlatzVerkaufsWerkzeug implements Observer
 		_ui.getVerkaufenButton().setDisable(!istVerkaufenMoeglich(plaetze));
 		_ui.getStornierenButton().setDisable(!istStornierenMoeglich(plaetze));
 		aktualisierePreisanzeige(plaetze);
+		
+		//läuft nicht !! 
+//		if (_vorstellung != null)
+//		{
+//			if (istAuswaehlenMoeglich(plaetze))
+//			{
+//				auswahlPlaetze(_vorstellung);
+//			}
+//			else if (istDeselektierenMoeglich(plaetze))
+//			{
+//				deselektierePlaetze(_vorstellung);
+//			}
+//		}
+	}
+	
+	public Set<Platz> ausgewaehltePlaetze()
+	{ 
+		return _ui.getPlatzplan().getAusgewaehltePlaetze(); 
 	}
 
 	/**
@@ -142,6 +161,22 @@ public class PlatzVerkaufsWerkzeug implements Observer
 	}
 
 	/**
+	 * Prüft, ob die angegebenen Plätze alle ausgewaehlt werden können.
+	 */
+	private boolean istAuswaehlenMoeglich(Set<Platz> plaetze)
+	{
+		return !plaetze.isEmpty() && _vorstellung.sindAuswaehlbar(plaetze);
+	}
+
+	/**
+	 * Prüft, ob die angegebenen Plätze alle deselektiert werden können.
+	 */
+	private boolean istDeselektierenMoeglich(Set<Platz> plaetze)
+	{
+		return !plaetze.isEmpty() && _vorstellung.sindDeselektierbar(plaetze);
+	}
+
+	/**
 	 * Setzt die Vorstellung. Sie ist das Material dieses Werkzeugs. Wenn die
 	 * Vorstellung gesetzt wird, muss die Anzeige aktualisiert werden. Die
 	 * Vorstellung darf auch null sein.
@@ -167,6 +202,11 @@ public class PlatzVerkaufsWerkzeug implements Observer
 				if (_vorstellung.istPlatzVerkauft(platz))
 				{
 					_ui.getPlatzplan().markierePlatzAlsVerkauft(platz);
+				}
+				if (_vorstellung.istPlatzAusgewaehlt(platz))
+				{
+					_ui.getPlatzplan().markierePlatzAlsAusgewaehlt(platz);
+					auswahlPlaetze(_vorstellung);
 				}
 			}
 		}
@@ -195,7 +235,27 @@ public class PlatzVerkaufsWerkzeug implements Observer
 		vorstellung.stornierePlaetze(plaetze);
 		aktualisierePlatzplan();
 	}
-	
+
+	/**
+	 * Wählt die ausgewählten Plaetze.
+	 */
+	private void auswahlPlaetze(Vorstellung vorstellung)
+	{
+		Set<Platz> plaetze = _ui.getPlatzplan().getAusgewaehltePlaetze();
+		vorstellung.auswaehlenPlaetze(plaetze);
+		aktualisierePlatzplan();
+	}
+
+	/**
+	 * Storniert die ausgewählten Plaetze.
+	 */
+	private void deselektierePlaetze(Vorstellung vorstellung)
+	{
+		Set<Platz> plaetze = _ui.getPlatzplan().getAusgewaehltePlaetze();
+		vorstellung.deselektierePlaetze(plaetze);
+		aktualisierePlatzplan();
+	}
+
 	public PlatzVerkaufsWerkzeugUI getUI()
 	{
 		return _ui;
@@ -204,13 +264,13 @@ public class PlatzVerkaufsWerkzeug implements Observer
 	@Override
 	public void update(Observable arg0, Object arg1)
 	{
-//		if((Boolean) arg1)
-//		{
-//			verkaufePlaetze(_vorstellung);			
-//		}
-//		else
-//		{
-//			aktualisierePlatzplan();
-//		}		
+		// if((Boolean) arg1)
+		// {
+		// verkaufePlaetze(_vorstellung);
+		// }
+		// else
+		// {
+		// aktualisierePlatzplan();
+		// }
 	}
 }
