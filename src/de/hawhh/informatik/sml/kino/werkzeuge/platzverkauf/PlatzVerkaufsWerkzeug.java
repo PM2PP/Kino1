@@ -71,26 +71,54 @@ public class PlatzVerkaufsWerkzeug implements Observer
 
 			if (_barzahlungWerkzeug.verkauft())
 			{
+				deselektiereAllePlaetze(); //damit die Plätze beim Verkauf rot werden und nicht gelb bleiben
 				verkaufePlaetze(_vorstellung);
 			}
 			else
 			{
+				deselektiereAllePlaetze(); //damit die Plätze beim Abbruch wieder grün werden und nicht gelb bleiben
 				aktualisierePlatzplan();
 			}
 		});
 
 		_ui.getStornierenButton().setOnAction(ae -> // Lambda
 		{
+			deselektiereAllePlaetze(); //damit die Plätze beim Stornieren wieder grün werden und nicht gelb bleiben
 			stornierePlaetze(_vorstellung);
 		});
 
 		_ui.getPlatzplan().addPlatzSelectionListener(event -> // Lambda
 		{
-			reagiereAufNeuePlatzAuswahl(event.getAusgewaehltePlaetze());
-			// if(_vorstellung != null)
-			// {
-			// auswahlPlaetze(_vorstellung);
-			// }
+			//läuft jetzt !! 
+			if (_vorstellung != null && ausgewaehltePlaetze() != null) //2. Bedingung in if-Klausel hat gefehlt
+			{
+				for(Platz platz : event.getAusgewaehltePlaetze())
+				{
+					_vorstellung.auswahlPlatz(platz);	
+//					_ui.getPlatzplan().markierePlatzAlsAusgewaehlt(platz); macht der Listener in Platzplan schon 
+				}
+				
+				for (Platz platz : _vorstellung.getKinosaal().getPlaetze()) //falls verkaufter Platz deselektiert wird
+				{
+					if (_vorstellung.istPlatzVerkauft(platz))
+					{
+						_ui.getPlatzplan().markierePlatzAlsVerkauft(platz);
+					}
+				}
+				
+				reagiereAufNeuePlatzAuswahl(event.getAusgewaehltePlaetze());
+//				if (istAuswaehlenMoeglich(event.getAusgewaehltePlaetze())) ...      alte Lösung: nicht möglich so zu lösen, 
+//				{                                                                   da event.getAusgewaehltePlaetze jedes Mal alle Plaetze
+//					auswahlPlaetze(_vorstellung);                                   die ausgewählt sind umfasst... das heißt
+//					reagiereAufNeuePlatzAuswahl(event.getAusgewaehltePlaetze());    bei der Auswahl des ersten Platzes wird der
+//				}                                                                   erste Platz ausgewählt, bei der Auswahl 
+//				else if (istDeselektierenMoeglich(event.getAusgewaehltePlaetze()))  eines zweiten Platzes wird aber nun für die die beiden Plätze aus
+//				{                                                                   event.getAusgewaehltePlaetze der Wahrheitswert "falsch" für  
+//					deselektierePlaetze(_vorstellung);                              istAuswaehlenMoeglich zurückgegeben, da der erste bereits ausgewählt wurde...
+//					reagiereAufNeuePlatzAuswahl(event.getAusgewaehltePlaetze());    
+//				}
+			}
+//			reagiereAufNeuePlatzAuswahl(event.getAusgewaehltePlaetze());
 		});
 	}
 
@@ -106,19 +134,6 @@ public class PlatzVerkaufsWerkzeug implements Observer
 		_ui.getVerkaufenButton().setDisable(!istVerkaufenMoeglich(plaetze));
 		_ui.getStornierenButton().setDisable(!istStornierenMoeglich(plaetze));
 		aktualisierePreisanzeige(plaetze);
-		
-		//läuft nicht !! 
-//		if (_vorstellung != null)
-//		{
-//			if (istAuswaehlenMoeglich(plaetze))
-//			{
-//				auswahlPlaetze(_vorstellung);
-//			}
-//			else if (istDeselektierenMoeglich(plaetze))
-//			{
-//				deselektierePlaetze(_vorstellung);
-//			}
-//		}
 	}
 	
 	public Set<Platz> ausgewaehltePlaetze()
@@ -183,8 +198,24 @@ public class PlatzVerkaufsWerkzeug implements Observer
 	 */
 	public void setVorstellung(Vorstellung vorstellung)
 	{
+		
+		if (_vorstellung != null && ausgewaehltePlaetze() != null)
+		{
+		for(Platz platz : _vorstellung.getKinosaal().getPlaetze())
+		{
+			if(!ausgewaehltePlaetze().contains(platz) && _vorstellung.istPlatzAusgewaehlt(platz))
+			{
+				_vorstellung.deselektionPlatz(platz); //um vor einem Vorstellungswechsel alle deselektierten Plätze zu deselektieren
+			}
+//			else if(ausgewaehltePlaetze().contains(platz) && !_vorstellung.istPlatzAusgewaehlt(platz)) ... nicht nötig, macht der Listener schon
+//			{
+//				_vorstellung.auswahlPlatz(platz);					
+//			}
+		}
+		}
 		_vorstellung = vorstellung;
 		aktualisierePlatzplan();
+		reagiereAufNeuePlatzAuswahl(ausgewaehltePlaetze()); //wichtig um Preisanzeige etc. zu aktualisieren
 	}
 
 	/**
@@ -199,14 +230,13 @@ public class PlatzVerkaufsWerkzeug implements Observer
 
 			for (Platz platz : saal.getPlaetze())
 			{
-				if (_vorstellung.istPlatzVerkauft(platz))
-				{
-					_ui.getPlatzplan().markierePlatzAlsVerkauft(platz);
+				if (_vorstellung.istPlatzVerkauft(platz) && !_vorstellung.istPlatzAusgewaehlt(platz)) // 2. &&-Bedingung wichtig, damit ausgewählte verkaufte
+				{                                                                                     // Plätze gelb statt rot angezeigt werden
+					_ui.getPlatzplan().markierePlatzAlsVerkauft(platz);                               
 				}
-				if (_vorstellung.istPlatzAusgewaehlt(platz))
+				else if (_vorstellung.istPlatzAusgewaehlt(platz))
 				{
 					_ui.getPlatzplan().markierePlatzAlsAusgewaehlt(platz);
-					auswahlPlaetze(_vorstellung);
 				}
 			}
 		}
@@ -272,5 +302,16 @@ public class PlatzVerkaufsWerkzeug implements Observer
 		// {
 		// aktualisierePlatzplan();
 		// }
+	}
+	
+	private void deselektiereAllePlaetze()
+	{
+		for(Platz platz : _vorstellung.getKinosaal().getPlaetze())
+		{
+			if(_vorstellung.istPlatzAusgewaehlt(platz))
+			{
+				_vorstellung.deselektionPlatz(platz);
+			}
+		}
 	}
 }

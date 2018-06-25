@@ -95,7 +95,7 @@ public class BarzahlungWerkzeug extends Observable
 			{
 				_ui.getOkButton().setDisable(true);
 			}
-			else if (textOfTextField().length() > 7 || !textOfTextField().matches("(\\d+\\d+),?(\\d\\d)"))
+			else if (textOfTextField().length() > 7 || !textOfTextField().matches("(\\d+\\d?),?(\\d\\d)"))
 			{
 				_ui.getOkButton().setDisable(true);
 				_ui.getInfo().setFill(Color.FIREBRICK);

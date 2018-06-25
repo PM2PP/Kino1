@@ -268,7 +268,7 @@ public class Vorstellung
 	 * 
 	 * @require platz != null
 	 * @require hatPlatz(platz)
-	 * @require !istPlatzAusgewaehlt(reihe, sitz)
+//	 * @require !istPlatzAusgewaehlt(reihe, sitz)
 	 * 
 	 * @ensure istPlatzAusgewaehlt(reihe, sitz)
 	 */
@@ -276,10 +276,13 @@ public class Vorstellung
 	{
 		assert platz != null : "Vorbedingung verletzt: platz != null";
 		assert hatPlatz(platz) : "Vorbedingung verletzt: hatPlatz(platz)";
-		assert !istPlatzAusgewaehlt(platz) : "Vorbedingung verletzt: !istPlatzAusgewaehlt(platz)";
+//		assert !istPlatzAusgewaehlt(platz) : "Vorbedingung verletzt: !istPlatzAusgewaehlt(platz)";
 
+		if(!istPlatzAusgewaehlt(platz))
+		{
 		_ausgewaehlt[platz.getReihenNr()][platz.getSitzNr()] = true;
 		_anzahlAusgewaehlterPlaetze++;
+		}
 //		PlatzVerkaufsWerkzeug.ausgewaehltePlaetze();
 	}
 	

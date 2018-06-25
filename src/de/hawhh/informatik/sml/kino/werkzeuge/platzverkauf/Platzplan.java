@@ -249,6 +249,7 @@ public class Platzplan extends GridPane
     {
         assert platz != null : "Vorbedingung verletzt: platz != null";
         _buttons[platz.getReihenNr()][platz.getSitzNr()].setAusgewaehlt(true);
+        _ausgewaehltePlaetze.add(platz); //wichtig dies hinzuzufügen!!!
 //        repaint();
     }
 
