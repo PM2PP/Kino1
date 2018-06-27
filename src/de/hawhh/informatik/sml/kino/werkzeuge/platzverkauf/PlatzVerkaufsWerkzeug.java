@@ -40,6 +40,7 @@ public class PlatzVerkaufsWerkzeug implements Observer
 	private PlatzVerkaufsWerkzeugUI _ui;
 	
 //	private Map<Platz, Boolean> _auswahl; Alternative mit Map
+//Commit
 
 	/**
 	 * Initialisiert das PlatzVerkaufsWerkzeug.
