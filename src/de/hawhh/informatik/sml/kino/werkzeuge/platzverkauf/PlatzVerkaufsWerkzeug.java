@@ -1,5 +1,6 @@
 package de.hawhh.informatik.sml.kino.werkzeuge.platzverkauf;
 
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
@@ -37,6 +38,8 @@ public class PlatzVerkaufsWerkzeug implements Observer
 	private BarzahlungWerkzeug _barzahlungWerkzeug;
 
 	private PlatzVerkaufsWerkzeugUI _ui;
+	
+//	private Map<Platz, Boolean> _auswahl; Alternative mit Map
 
 	/**
 	 * Initialisiert das PlatzVerkaufsWerkzeug.
@@ -47,6 +50,7 @@ public class PlatzVerkaufsWerkzeug implements Observer
 		registriereUIAktionen();
 		// Am Anfang wird keine Vorstellung angezeigt:
 		setVorstellung(null);
+//		_auswahl = new Map<Platz, Boolean>; Alternative mit Map
 	}
 
 	/**
@@ -96,6 +100,7 @@ public class PlatzVerkaufsWerkzeug implements Observer
 				{
 					_vorstellung.auswahlPlatz(platz);	
 //					_ui.getPlatzplan().markierePlatzAlsAusgewaehlt(platz); macht der Listener in Platzplan schon 
+//					_auswahl.put(platz, true); Alternative mit Map
 				}
 				
 				for (Platz platz : _vorstellung.getKinosaal().getPlaetze()) //falls verkaufter Platz deselektiert wird
